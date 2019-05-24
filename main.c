@@ -126,7 +126,32 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list){
                     //print info of each token
                 }
             break;
-            }   
+            }
+	case '0': case '1': case '2': case '3': case '4': case '5':
+	case '6': case '7': case '8': case '9': case '-':
+	    {
+		    char *begin = allContent + cur;
+		    char *end;
+		    char *buffer;
+
+		    end = strchr(allContent + cur, '}');
+		    if (end == NULL)
+			    break;
+	    }
+
+	    int stringLength = end -begin;
+
+	    buffer = malloc(stringLength +1);
+	    memset(buffer,0,stringLength +1);
+	    memcpy(buffer, begin,stringLength);
+	    json->tokens[tokenIndex].type = TOKEN_NUMBER;
+	    json->toekns[tokenIndex].number = atof(buffer);
+
+	    free(buffer);
+	    tokenIndex++;
+
+	    cur = cur + stringLength +1;
+	}
             default:
                 break;
         }
