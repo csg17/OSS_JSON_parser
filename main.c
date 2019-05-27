@@ -55,6 +55,7 @@ int main(int argc, char **argv)
     }
 
     sizeOfFile = getFileSize(argv[1]);
+    printf("size of file %d \n", sizeOfFile);
     char allContent[sizeOfFile];
 
     while (fscanf(fp, "%s", buffer) != EOF)
@@ -211,7 +212,7 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
 
             break;
             }
-
+            
             //object
             case '{':
             {
@@ -227,7 +228,7 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
                 numOfToken++;
                 //printf("[%2d] %s (size=1, %lu~%lu)\n", numOfToken, temp, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
 
-                JsonParser(allContent, contentSize, list, cur);
+                JsonParser(allContent, wordLen + cur, list, cur);
                 cur = cur + wordLen + 1;
 
                 break;
