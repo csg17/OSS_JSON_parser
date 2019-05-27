@@ -6,8 +6,7 @@ Planning to use weather information
 We are going to sort, print weather information of each city.
 
 #### Running the tests
-![Uploading 그림1.png…]()
-
+![그림1](https://user-images.githubusercontent.com/47957052/58436907-8dc61f00-8102-11e9-992d-73a6ff2137d5.png)
 #### Authors
 * 권예성
 * 송하림
