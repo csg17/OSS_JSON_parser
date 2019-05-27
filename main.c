@@ -24,7 +24,7 @@ typedef struct token
 } TOKEN_T;
 
 int getFileSize(char *filename);
-void JsonParser(char *allContent, int contentSize, TOKEN_T *list);
+void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base);
 void Pushtoken(TOKEN_T *head, TOKEN_T *data);
 void printToken(TOKEN_T *head, char* allContent);
 int numOfToken = 0;
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
         strcat(allContent, " ");
     }
 
-    JsonParser(allContent, sizeOfFile, tokenList);
+    JsonParser(allContent, sizeOfFile, tokenList, 0);
 
     return 0;
 }
@@ -147,9 +147,9 @@ void printToken(TOKEN_T *head, char* allContent){
 }
 
 
-void JsonParser(char *allContent, int contentSize, TOKEN_T *list)
+void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
 {
-    int cur = 1;
+    int cur = base;
     //int numOfToken = 0;
     // 이거 있으면 ARRAY에 원소 2개 이상일 때 동작 안함.
     // if(allContent[cur] != '{'){
@@ -216,24 +216,24 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list)
             case '{':
             {
                 char temp[contentSize]; // 객체 저장
-                int k;
-                TOKEN_T *tokenListObject = malloc(sizeof(TOKEN_T));
-                char *begin;
+                char *begin = allContent + cur;
 
-                if( allContent[cur] == '{') { begin = allContent + cur; }
+                // if( allContent[cur] == '{') { begin = allContent + cur; }
 
                 char *end = strchr(begin+1, '}');
                 int wordLen = end - begin + 1;
                 strncpy(temp, begin, wordLen);
                 temp[wordLen] = '\0';
                 numOfToken++;
-                printf("[%2d] %s (size=1, %lu~%lu)\n", numOfToken, temp, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
+                //printf("[%2d] %s (size=1, %lu~%lu)\n", numOfToken, temp, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
 
-                JsonParser(temp, wordLen, tokenListObject);
+                JsonParser(allContent, contentSize, list, cur);
                 cur = cur + wordLen + 1;
 
                 break;
             }
+            case '}':
+                return;
 
             //numbers
             case '0': case '1': case '2': case '3': case '4': case '5': case '6': case'7': case '8': case '9': case '-':
