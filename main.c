@@ -16,19 +16,26 @@ typedef struct token {
     int start;
     int end;
     int size;
-    int flag; // token size
+    int flag; // token sizes
+    struct token* value;
     struct token* next; // point next node
 }TOKEN_T;
 
 int getFileSize(char *filename);
 void JsonParser(char *allContent, int contentSize, TOKEN_T *list);
+void Pushtoken(TOKEN_T* head, TOKEN_T* data);
 
 int main(int argc, char **argv) {
     int sizeOfFile = -1;
     char buffer[64];
 
     FILE *fp = NULL;
-    TOKEN_T *tokenList = malloc(sizeof(TOKEN_T) * TOKEN_COUNT);
+    //tokenList의 첫 node는 next를 제외하고 모두 null입니다.
+    TOKEN_T *tokenList = malloc(sizeof(TOKEN_T));
+
+    tokenList->value = NULL;
+    tokenList->next = NULL;
+
 
     if(argc < 2){
         printf("usage: ./out <filename>\n");
@@ -68,6 +75,9 @@ int getFileSize(char *filename){
     return len;
 }
 
+void Pushtoken(TOKEN_T* head, TOKEN_T* data){
+
+}
 
 void JsonParser(char *allContent, int contentSize, TOKEN_T *list){
     int cur = 1;
@@ -81,6 +91,8 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list){
 
     while(cur < contentSize){
         switch (allContent[cur]) { //doc[pos]
+        
+            //string
             case '"':
             {
                 char *begin = allContent + cur + 1;
@@ -103,6 +115,8 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list){
                 //token size
             }
                 break;
+
+            //array
             case '[':
             {
                 cur++;
