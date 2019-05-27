@@ -3,7 +3,8 @@
 #include <string.h>
 #define TOKEN_COUNT 50
 
-typedef enum{
+typedef enum
+{
     UNDEFINED = 0,
     OBJECT = 1,
     ARRAY = 2,
@@ -11,21 +12,24 @@ typedef enum{
     PRIMITIVE = 4
 } TYPE_T;
 
-typedef struct token {
+typedef struct token
+{
     TYPE_T type;
     int start;
     int end;
     int size;
     int flag; // token sizes
-    struct token* value;
-    struct token* next; // point next node
-}TOKEN_T;
+    struct token *value;
+    struct token *next; // point next node
+} TOKEN_T;
 
 int getFileSize(char *filename);
 void JsonParser(char *allContent, int contentSize, TOKEN_T *list);
-void Pushtoken(TOKEN_T* head, TOKEN_T* data);
+void Pushtoken(TOKEN_T *head, TOKEN_T *data);
+void printToken(TOKEN_T *head, char* allContent);
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     int sizeOfFile = -1;
     char buffer[64];
 
@@ -36,14 +40,15 @@ int main(int argc, char **argv) {
     tokenList->value = NULL;
     tokenList->next = NULL;
 
-
-    if(argc < 2){
+    if (argc < 2)
+    {
         printf("usage: ./out <filename>\n");
         return -1;
     }
 
     fp = fopen(argv[1], "r");
-    if(fp == NULL){
+    if (fp == NULL)
+    {
         printf("fail to open file %s\n", argv[1]);
         return -1;
     }
@@ -51,7 +56,8 @@ int main(int argc, char **argv) {
     sizeOfFile = getFileSize(argv[1]);
     char allContent[sizeOfFile];
 
-    while(fscanf(fp, "%s", buffer) != EOF) {
+    while (fscanf(fp, "%s", buffer) != EOF)
+    {
         strcat(allContent, buffer);
         strcat(allContent, " ");
     }
@@ -62,12 +68,16 @@ int main(int argc, char **argv) {
 }
 
 //get length of file content
-int getFileSize(char *filename){
+int getFileSize(char *filename)
+{
     FILE *fp = fopen(filename, "r");
     int len = -1;
-    if(fp == NULL) {
+    if (fp == NULL)
+    {
         printf("fail to open file\n");
-    } else {
+    }
+    else
+    {
         fseek(fp, 0, SEEK_END);
         len = (int)ftell(fp);
     }
@@ -75,17 +85,75 @@ int getFileSize(char *filename){
     return len;
 }
 
-void Pushtoken(TOKEN_T* head, TOKEN_T* data){
+void Pushtoken(TOKEN_T *head, TOKEN_T *data)
+{
+    TOKEN_T *tail;
 
+    //fine end of list
+    while (tail->next)
+        tail = tail->next;
+
+    //data is key
+    if (data->size == 1){
+        tail->next = data;
+    }
+    //data is value
+    else if (data->size == 0){
+        switch (data->type){
+            case OBJECT:{
+                tail->value = data;
+                break;
+            }
+
+            case ARRAY:{
+                //find end of array
+                while(tail->value) tail = tail->value;
+                tail->value = data;
+                break;
+            }
+
+            case STRING:{
+                tail->value = data;
+                break;
+            }
+            default:{
+                printf("What is the token's type?\n");
+            }
+        }
+    }
+    else 
+        printf("fail to add token in list\n");
+}
+void printToken(TOKEN_T *head, char* allContent){
+    TOKEN_T *temp = head;
+
+    do{
+        if(temp->value == NULL) continue;
+        else if(temp->value->type == OBJECT){
+            printToken(temp->value, allContent);
+        }
+        else if(temp->value->type == ARRAY){
+            while(temp->value){
+                printf("\n");
+                temp = temp->value;
+            }
+        }
+        else {
+            printf("\n");
+        }
+        temp = temp->next;
+    }while(temp->next);
 }
 
-void JsonParser(char *allContent, int contentSize, TOKEN_T *list){
+
+void JsonParser(char *allContent, int contentSize, TOKEN_T *list)
+{
     int cur = 1;
     int numOfToken = 0;
-
-    if(allContent[cur] != '{'){
-        return ;
-    }
+    // 이거 있으면 ARRAY에 원소 2개 이상일 때 동작 안함.
+    // if(allContent[cur] != '{'){
+    //     return ;
+    // }
 
     cur++;
 
@@ -147,5 +215,4 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list){
         }
         cur++;
     }
-
 }
