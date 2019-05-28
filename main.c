@@ -18,7 +18,6 @@ typedef struct token
     int start;
     int end;
     int size;
-    int flag; // token sizes
     struct token *value;
     struct token *next; // point next node
 } TOKEN_T;
@@ -65,6 +64,10 @@ int main(int argc, char **argv)
     }
 
     JsonParser(allContent, sizeOfFile, tokenList, 0);
+    printf("Parsor done!\n");
+
+    // printToken(tokenList, allContent);
+
 
     return 0;
 }
@@ -89,8 +92,7 @@ int getFileSize(char *filename)
 
 void Pushtoken(TOKEN_T *head, TOKEN_T *data)
 {
-    TOKEN_T *tail;
-
+    TOKEN_T *tail = head;
     //fine end of list
     while (tail->next)
         tail = tail->next;
@@ -100,6 +102,7 @@ void Pushtoken(TOKEN_T *head, TOKEN_T *data)
         tail->next = data;
     }
     //data is value
+    
     else if (data->size == 0){
         switch (data->type){
             case OBJECT:{
@@ -141,16 +144,17 @@ void printToken(TOKEN_T *head, char* allContent){
             }
         }
         else {
-            printf("\n");
+            printf("STRING : %d\n", temp->value->start);
         }
         temp = temp->next;
-    }while(temp->next);
+    }while(temp);
 }
 
 
 void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
 {
     int cur = base;
+    int flag = 0;
     //int numOfToken = 0;
     // 이거 있으면 ARRAY에 원소 2개 이상일 때 동작 안함.
     // if(allContent[cur] != '{'){
@@ -182,6 +186,20 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
 
                 cur = cur + wordLen + 1;
                 //tokenList에 저장하는거
+                TOKEN_T *t_token = malloc(sizeof(TOKEN_T));
+
+                // t_token->type = STRING;
+                // t_token->start = strlen(allContent) - strlen(begin);
+                // t_token->end = strlen(allContent) - strlen(end);
+                // t_token->size = flag;
+                // t_token->value = NULL;
+                // t_token->next = NULL;
+                
+                // if(flag) flag = 0;
+                // else flag = 1;
+
+                // Pushtoken(list, t_token);
+                
                 //token size
             }
                 break;
@@ -225,8 +243,8 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
                 int wordLen = end - begin + 1;
                 strncpy(temp, begin, wordLen);
                 temp[wordLen] = '\0';
-                numOfToken++;
-                //printf("[%2d] %s (size=1, %lu~%lu)\n", numOfToken, temp, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
+                // numOfToken++;
+                printf("%s (size=1, %lu~%lu)\n",  temp, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
 
                 JsonParser(allContent, wordLen + cur, list, cur);
                 cur = cur + wordLen + 1;
