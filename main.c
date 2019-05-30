@@ -207,26 +207,23 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
             //array
             case '[':
             {
-                cur++;
-                char temp[contentSize];
+              char temp[contentSize]; // 문자열 토큰
+              char arrStr[contentSize]; // 문자열 배열 토큰
+              char *beginArr, *endArr;
+              TOKEN_T *tokenListObject = malloc(sizeof(TOKEN_T));
+              int wordLen;
 
-                while( allContent[cur] != ']' ){// doc[pos]
-                  cur++;
-                    if( allContent[cur] == '"')
-                    {
-                        char *begin = allContent + cur + 1;
-                        char *end = strchr(begin, '"');// '"'로 시작하는 문자열을 end에
-                        if( end==NULL ) break;
-
-                        int wordLen = end - begin;
-                        strncpy(temp, begin, wordLen);
-                        temp[wordLen] = '\0';
-                        cur = cur + wordLen + 1;
-                        numOfToken++;
-                        printf("[%2d] %s (size=1, %lu~%lu)\n", numOfToken, temp, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
-                    }
-                    //print info of each token
-                }
+              if( allContent[cur] == '[' ){
+                beginArr = allContent + cur;
+                endArr = strchr(beginArr, ']');
+                wordLen = endArr - beginArr + 1;
+                strncpy(arrStr, beginArr, wordLen);
+                arrStr[wordLen] = '\0';
+                numOfToken++;
+                printf("[%2d] %s (size=1, %lu~%lu, ARRAY)\n", numOfToken, arrStr, strlen(allContent) - strlen(beginArr), strlen(allContent) - strlen(endArr));
+              }
+              JsonParser(allContent, wordLen + cur, list, cur);
+              cur = cur + wordLen + 1;
 
             break;
             }
