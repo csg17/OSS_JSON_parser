@@ -9,6 +9,10 @@
 			"object": {
 				"type": "project",
 				"url": "https://github.com/team3.git"
+			},
+			"object2": {
+				"type": "project",
+				"url": "https://github.com/team3.git"
 			}
 		},
 	"Year": 2037,

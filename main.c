@@ -239,11 +239,21 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
             {
                 char temp[contentSize]; // 객체 저장
                 char *begin = allContent + cur;
-                
+                char *cp = begin;
+                int depth = 0;
                 // if( allContent[cur] == '{') { begin = allContent + cur; }
-                
-                char *end = strchr(begin+1, '}');
-                int wordLen = end - begin + 1;
+                char *end = NULL;
+                do{
+                    if(*cp == '{') depth++;
+                    else if(*cp == '}') depth--;
+                    cp++;
+                }while(depth);
+
+                // end = strchr(begin+1, '}');
+                end = cp;
+                int wordLen = end - begin;
+
+
                 strncpy(temp, begin, wordLen);
                 temp[wordLen] = '\0';
                 //
@@ -253,8 +263,8 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
                         flag++;
                 }
                 flag++;
-                // numOfToken++;
-                printf("%s (size=%d, %lu~%lu)\n",  temp,flag, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
+                numOfToken++;
+                printf("[%2d] %s (size=%d, %lu~%lu)\n", numOfToken, temp, flag, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
                 
                 JsonParser(allContent, wordLen + cur, list, cur);
                 cur = cur + wordLen + 1;
