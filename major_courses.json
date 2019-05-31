@@ -1,0 +1,506 @@
+{
+    "Monday":
+    {
+        "Computer Science":
+        [
+             {
+                "code": "ECE20010",
+                "subject" :"데이타구조",
+                "start time" : 6,
+                "end time": 7,
+                "professor":"홍참길",
+                "credit": 3,
+                "place": "OH 401"
+            },
+            {
+                "code": "ECE20010",
+                "subject":"데이타구조",
+                "start time": 1,
+                "end time": 2,
+                "professor":"김영섭",
+                "credit": 3,
+                "place": "NTH 311"
+            },
+            {
+                "code": "ECE20010",
+                "subject":"데이타구조",
+                "start time": 6,
+                "end time": 7,
+                "professor":"김영섭",
+                "credit": 3,
+                "place": "NTH 311"
+            },
+            {
+                "code": "ECE20016",
+                "subject":"자바프로그래밍언어",
+                "start time": 6,
+                "end time": 7,
+                "professor":"남재창",
+                "credit": 3,
+                "place": "NTH 413"
+            },
+            {
+                "code": "ECE20016",
+                "subject":"자바프로그래밍언어",
+                "start time": 1,
+                "end time": 2,
+                "professor":"김기석",
+                "credit": 3,
+                "place": "NTH 413"
+            },
+            {
+                "code": "ECE20019",
+                "subject":"오픈소스 소프트웨어",
+                "start time": 6,
+                "end time": 7,
+                "professor": "이원형",
+                "credit": 3,
+                "place": "NTH 313"
+            },
+            {
+                "code": "ECE20051",
+                "subject":"회로이론 1",
+                "start time": 5,
+                "end time": 5,
+                "professor": "한윤식",
+                "credit": 3,
+                "place": "NTH 214"
+            },
+            {
+                "code": "ECE20051",
+                "subject":"회로이론 1",
+                "start time": 6,
+                "end time": 6,
+                "professor": "한윤식",
+                "credit": 3,
+                "place": "NTH 214"
+            },
+            {
+                "code": "ECE30021",
+                "subject":"운영체제",
+                "start time": 4,
+                "end time": 4,
+                "professor": "안민규",
+                "credit": 3,
+                "place": "OH 401"
+            },
+            {
+                "code": "ECE10004",
+                "subject":"컴퓨터 및 전자공학개론",
+                "start time": 6,
+                "end time": 7,
+                "professor": "이강 외 1명",
+                "credit": 2,
+                "place": "NTH 412"
+            }
+        ],
+        "Life science": 
+        [
+            {
+                "code": "BFT30064",
+                "subject":"바이오데이터분석",
+                "start time": 6,
+                "end time": 6,
+                "professor":"안태진",
+                "credit": 3,
+                "place": "NMH 310"
+            },
+            {
+                "code": "BFT40001",
+                "subject":"면역학",
+                "start time": 3,
+                "end time": 3,
+                "professor":"송성규",
+                "credit": 3,
+                "place": "NMH 310"
+            },
+            {
+                "code": "BFT40014",
+                "subject":"세포생물학2",
+                "start time": 2,
+                "end time": 2,
+                "professor":"현창기 / 이정민",
+                "credit": 3,
+                "place": "NMH 310"
+            }
+        ]
+      },
+    "Tuesday":
+    {
+        "Computer Science":
+        [
+            {
+                "code": "ECE20019",
+                "subject":"오픈소스 소프트웨어",
+                "start time": 1,
+                "end time": 2,
+                "professor": "김광",
+                "credit": 3,
+                "place": "NTH 313"
+            },
+            {
+                "code": "ECE20019",
+                "subject":"오픈소스 소프트웨어",
+                "start time": 1,
+                "end time": 2,
+                "professor": "장소연",
+                "credit": 3,
+                "place": "NTH 412"
+            },
+            {
+                "code": "ECE20019",
+                "subject":"오픈소스 소프트웨어",
+                "start time": 1,
+                "end time": 2,
+                "professor": "홍참길",
+                "credit": 3,
+                "place": "ANH 302"
+            },
+            {
+                "code": "ECE20019",
+                "subject":"오픈소스 소프트웨어",
+                "start time": 6,
+                "end time": 7,
+                "professor": "이원형",
+                "credit": 3,
+                "place": "ANH 302"
+            },
+            {
+                "code": "ECE20057",
+                "subject":"논리설계",
+                "start time": 5,
+                "end time": 5,
+                "professor": "이종원",
+                "credit": 3,
+                "place": "NTH 412"
+            },
+            {
+                "code": "ECE20057",
+                "subject":"논리설계",
+                "start time": 4,
+                "end time": 4,
+                "professor": "이종원",
+                "credit": 3,
+                "place": "NTH 412"
+            },
+            {
+                "code": "ECE30021",
+                "subject":"운영체제",
+                "start time": 5,
+                "end time": 5,
+                "professor": "홍신",
+                "credit": 3,
+                "place": "OH 401"
+            },
+            {
+                "code": "ECE30030",
+                "subject":"데이타베이스",
+                "start time": 5,
+                "end time": 5,
+                "professor": "이건",
+                "credit": 3,
+                "place": "OH 420"
+            }
+        ],
+        "Life science": 
+        [
+            {
+                "code": "BFT20002",
+                "subject":"일반미생물",
+                "start time": 4,
+                "end time": 4,
+                "professor":"현창기 / 이정민 / 도형기 / 송성규",
+                "credit": 3,
+                "place": "OH 405"
+            },
+            {
+                "code": "BFT30001",
+                "subject":"생화학2",
+                "start time": 2,
+                "end time": 2,
+                "professor":"현창기 / 이정민 / 김아람 / 서병선",
+                "credit": 3,
+                "place": "NMH 307"
+            },
+            {
+                "code": "BFT30057",
+                "subject":"시스템생물학",
+                "start time": 4,
+                "end time": 4,
+                "professor":"김아람",
+                "credit": 3,
+                "place": "NMH 310"
+            },
+            {
+                "code": "BFT30016",
+                "subject":"생리학",
+                "start time": 3,
+                "end time": 3,
+                "professor":"서병선 / 이정민 / 안태진",
+                "credit": 3,
+                "place": "NMH 310"
+            },
+            {
+                "code": "BFT40013",
+                "subject":"분자생물학2",
+                "start time": 5,
+                "end time": 5,
+                "professor":"김아람 / 이정민",
+                "credit": 3,
+                "place": "NMH 310"
+            }
+        ]
+      },
+    "Thursday":
+    {
+        "Computer Science":
+        [
+            {
+                "code": "ECE20010",
+                "subject":"데이타구조",
+                "start time": 6,
+                "end time": 7,
+                "professor":"홍참길",
+                "credit": 3,
+                "place": "OH 401"
+            },
+            {
+                "code": "ECE20010",
+                "subject":"데이타구조",
+                "start time": 1,
+                "end time": 2,
+                "professor":"김영섭",
+                "credit": 3,
+                "place": "NTH 311"
+            },
+            {
+                "code": "ECE20010",
+                "subject":"데이타구조",
+                "start time": 6,
+                "end time": 7,
+                "professor":"김영섭",
+                "credit": 3,
+                "place": "NTH 311"
+            },
+            {
+                "code": "ECE20016",
+                "subject":"자바프로그래밍언어",
+                "start time": 6,
+                "end time": 7,
+                "professor":"남재창",
+                "credit": 3,
+                "place": "NTH 413"
+            },
+            {
+                "code": "ECE20016",
+                "subject":"자바프로그래밍언어",
+                "start time": 1,
+                "end time": 2,
+                "professor":"김기석",
+                "credit": 3,
+                "place": "NTH 413"
+            },
+            {
+                "code": "ECE20019",
+                "subject":"오픈소스 소프트웨어",
+                "start time": 6,
+                "end time": 7,
+                "professor": "이원형",
+                "credit": 3,
+                "place": "NTH 313"
+            },
+            {
+                "code": "ECE20051",
+                "subject":"회로이론 1",
+                "start time": 5,
+                "end time": 5,
+                "professor": "한윤식",
+                "credit": 3,
+                "place": "NTH 214"
+            },
+            {
+                "code": "ECE20051",
+                "subject":"회로이론 1",
+                "start time": 6,
+                "end time": 6,
+                "professor": "한윤식",
+                "credit": 3,
+                "place": "NTH 214"
+            },
+            {
+                "code": "ECE30021",
+                "subject":"운영체제",
+                "start time": 4,
+                "end time": 4,
+                "professor": "안민규",
+                "credit": 3,
+                "place": "OH 401"
+            }
+        ],
+        "Life science": 
+        [
+            {
+                "code": "BFT30064",
+                "subject":"바이오데이터분석",
+                "start time": 6,
+                "end time": 6,
+                "professor":"안태진",
+                "credit": 3,
+                "place": "NMH 310"
+            },
+            {
+                "code": "BFT40001",
+                "subject":"면역학",
+                "start time": 3,
+                "end time": 3,
+                "professor":"송성규",
+                "credit": 3,
+                "place": "NMH 310"
+            },
+            {
+                "code": "BFT40014",
+                "subject":"세포생물학2",
+                "start time": 2,
+                "end time": 2,
+                "professor":"현창기 / 이정민",
+                "credit": 3,
+                "place": "NMH 310"
+            }
+        ]
+      },
+    "Friday":
+    {
+        "Computer Science":
+        [
+            {
+                "code": "ECE20019",
+                "subject":"오픈소스 소프트웨어",
+                "start time": 1,
+                "end time": 2,
+                "professor": "김광",
+                "credit": 3,
+                "place": "NTH 313"
+            },
+            {
+                "code": "ECE20019",
+                "subject":"오픈소스 소프트웨어",
+                "start time": 1,
+                "end time": 2,
+                "professor": "장소연",
+                "credit": 3,
+                "place": "NTH 412"
+            },
+            {
+                "code": "ECE20019",
+                "subject":"오픈소스 소프트웨어",
+                "start time": 1,
+                "end time": 2,
+                "professor": "홍참길",
+                "credit": 3,
+                "place": "ANH 302"
+            },
+            {
+                "code": "ECE20019",
+                "subject":"오픈소스 소프트웨어",
+                "start time": 6,
+                "end time": 7,
+                "professor": "이원형",
+                "credit": 3,
+                "place": "ANH 302"
+            },
+            {
+                "code": "ECE20057",
+                "subject":"논리설계",
+                "start time": 5,
+                "end time": 5,
+                "professor": "이종원",
+                "credit": 3,
+                "place": "NTH 412"
+            },
+            {
+                "code": "ECE20057",
+                "subject":"논리설계",
+                "start time": 4,
+                "end time": 4,
+                "professor": "이종원",
+                "credit": 3,
+                "place": "NTH 412"
+            },
+            {
+                "code": "ECE30021",
+                "subject":"운영체제",
+                "start time": 5,
+                "end time": 5,
+                "professor": "홍신",
+                "credit": 3,
+                "place": "OH 401"
+            },
+            {
+                "code": "ECE30030",
+                "subject":"데이타베이스",
+                "start time": 5,
+                "end time": 5,
+                "professor": "이건",
+                "credit": 3,
+                "place": "OH 420"
+            }
+        ],
+        "Life science": 
+        [
+            {
+                "code": "BFT20002",
+                "subject":"일반미생물",
+                "start time": 4,
+                "end time": 4,
+                "professor":"현창기 / 이정민 / 도형기 / 송성규",
+                "credit": 3,
+                "place": "OH 405"
+            },
+            {
+                "code": "BFT30001",
+                "subject":"생화학2",
+                "start time": 2,
+                "end time": 2,
+                "professor":"현창기 / 이정민 / 김아람 / 서병선",
+                "credit": 3,
+                "place": "NMH 307"
+            },
+            {
+                "code": "BFT30057",
+                "subject":"시스템생물학",
+                "start time": 4,
+                "end time": 4,
+                "professor":"김아람",
+                "credit": 3,
+                "place": "NMH 310"
+            },
+            {
+                "code": "BFT30016",
+                "subject":"생리학",
+                "start time": 3,
+                "end time": 3,
+                "professor":"서병선 / 이정민 / 안태진",
+                "credit": 3,
+                "place": "NMH 310"
+            },
+            {
+                "code": "BFT40013",
+                "subject":"분자생물학2",
+                "start time": 5,
+                "end time": 5,
+                "professor":"김아람 / 이정민",
+                "credit": 3,
+                "place": "NMH 310"
+            },
+            {
+                "code": "BFT20001",
+                "subject":"유기화학",
+                "start time": 5,
+                "end time": 6,
+                "professor":"차승훈",
+                "credit": 3,
+                "place": "OH 405"
+            }
+        ]
+      }
+  }
