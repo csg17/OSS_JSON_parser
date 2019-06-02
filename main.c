@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define TOKEN_COUNT 50
 
-typedef enum
-{
+typedef enum{
     UNDEFINED = 0,
     OBJECT = 1,
     ARRAY = 2,
@@ -12,8 +10,7 @@ typedef enum
     PRIMITIVE = 4
 } TYPE_T;
 
-typedef struct token
-{
+typedef struct token{
     TYPE_T type;
     int start;
     int end;
@@ -40,15 +37,13 @@ int main(int argc, char **argv)
     tokenList->value = NULL;
     tokenList->next = NULL;
     
-    if (argc < 2)
-    {
-        printf("usage: ./out <filename>\n");
+    if (argc < 2){
+        printf("usage: ./main <filename>\n");
         return -1;
     }
     
     fp = fopen(argv[1], "r");
-    if (fp == NULL)
-    {
+    if (fp == NULL){
         printf("fail to open file %s\n", argv[1]);
         return -1;
     }
@@ -73,16 +68,12 @@ int main(int argc, char **argv)
 }
 
 //get length of file content
-int getFileSize(char *filename)
-{
+int getFileSize(char *filename){
     FILE *fp = fopen(filename, "r");
     int len = -1;
-    if (fp == NULL)
-    {
+    if (fp == NULL){
         printf("fail to open file\n");
-    }
-    else
-    {
+    } else{
         fseek(fp, 0, SEEK_END);
         len = (int)ftell(fp);
     }
@@ -90,8 +81,7 @@ int getFileSize(char *filename)
     return len;
 }
 
-void Pushtoken(TOKEN_T *head, TOKEN_T *data)
-{
+void Pushtoken(TOKEN_T *head, TOKEN_T *data){
     TOKEN_T *tail = head;
     //fine end of list
     while (tail->next)
@@ -101,8 +91,8 @@ void Pushtoken(TOKEN_T *head, TOKEN_T *data)
     if (data->size == 1){
         tail->next = data;
     }
-    //data is value
     
+    //data is value
     else if (data->size == 0){
         switch (data->type){
             case OBJECT:{
@@ -166,9 +156,8 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
     while(cur < contentSize){
         switch (allContent[cur]) { //doc[pos]
                 
-                //string
-            case '"':
-            {
+            //string
+            case '"' : {
                 char prev = allContent[cur-2];
                 int flag;
                 char *begin = allContent + cur + 1;
@@ -205,14 +194,10 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
                 // else flag = 1;
                 
                 // Pushtoken(list, t_token);
-                
-                //token size
-            }
                 break;
-                
-                //array
-            case '[':
-            {
+            }
+            //array
+            case '[' : {
                 char temp[contentSize]; // 문자열 토큰
                 char arrStr[contentSize]; // 문자열 배열 토큰
                 char *beginArr, *endArr;
@@ -233,10 +218,8 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
                 
                 break;
             }
-                
-                //object
-            case '{':
-            {
+            //object
+            case '{' : {
                 char temp[contentSize]; // 객체 저장
                 char *begin = allContent + cur;
                 char *cp = begin;
@@ -248,15 +231,15 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
                     else if(*cp == '}') depth--;
                     cp++;
                 }while(depth);
-
+                
                 // end = strchr(begin+1, '}');
                 end = cp;
                 int wordLen = end - begin;
-
-
+                
+                
                 strncpy(temp, begin, wordLen);
                 temp[wordLen] = '\0';
-                //
+                
                 int flag=0;
                 for(int i=0; i<wordLen; i++){
                     if(allContent[cur+i]==',')
@@ -274,7 +257,7 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
             case '}':
                 return;
                 
-                //numbers
+            //numbers
             case '0': case '1': case '2': case '3': case '4': case '5': case '6': case'7': case '8': case '9': case '-':
             {
                 char prev = allContent[cur-2];
@@ -312,3 +295,4 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
         cur++;
     }
 }
+
