@@ -15,15 +15,18 @@ typedef struct token{
     int start;
     int end;
     int size;
+    char keyVal[100000];
     struct token *value;
     struct token *next; // point next node
 } TOKEN_T;
 
+#define MAX 100
 int getFileSize(char *filename);
 void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base);
 void Pushtoken(TOKEN_T *head, TOKEN_T *data);
 void printToken(TOKEN_T *head, char* allContent);
 int numOfToken = 0;
+int tf, sz, total[MAX], i=0, aa=0;
 
 int main(int argc, char **argv)
 {
@@ -51,14 +54,14 @@ int main(int argc, char **argv)
     sizeOfFile = getFileSize(argv[1]);
     printf("size of file %d \n", sizeOfFile);
     char allContent[sizeOfFile];
-    
+        
     while (fscanf(fp, "%s", buffer) != EOF)
     {
         strcat(allContent, buffer);
         strcat(allContent, " ");
     }
     
-    JsonParser(allContent, sizeOfFile, tokenList, 0);
+    JsonParser(allContent, sizeOfFile, tokenList, 1);
     printf("Parsor done!\n");
     
     // printToken(tokenList, allContent);
@@ -83,9 +86,11 @@ int getFileSize(char *filename){
 
 void Pushtoken(TOKEN_T *head, TOKEN_T *data){
     TOKEN_T *tail = head;
+    
     //fine end of list
-    while (tail->next)
+    while (tail->next){
         tail = tail->next;
+    }
     
     //data is key
     if (data->size == 1){
@@ -93,10 +98,10 @@ void Pushtoken(TOKEN_T *head, TOKEN_T *data){
     }
     
     //data is value
-    else if (data->size == 0){
+    else if (data->size == 0 || data->size > 1){
         switch (data->type){
             case OBJECT:{
-                tail->value = data;
+                tail->next = data;
                 break;
             }
                 
@@ -111,6 +116,10 @@ void Pushtoken(TOKEN_T *head, TOKEN_T *data){
                 tail->value = data;
                 break;
             }
+            case PRIMITIVE:{
+                tail->value = data;
+                break;
+            }
             default:{
                 printf("What is the token's type?\n");
             }
@@ -119,46 +128,82 @@ void Pushtoken(TOKEN_T *head, TOKEN_T *data){
     else
         printf("fail to add token in list\n");
 }
+
 void printToken(TOKEN_T *head, char* allContent){
+    printf("in print token\n");
+    
     TOKEN_T *temp = head;
     
-    do{
-        if(temp->value == NULL) continue;
-        else if(temp->value->type == OBJECT){
+    while(temp != NULL){
+        
+        if(temp->value->type == OBJECT){
             printToken(temp->value, allContent);
         }
         else if(temp->value->type == ARRAY){
+            int kWordLen = temp->end - temp->start;
+            char kbuf[kWordLen];
+            strncpy(kbuf, allContent + temp->start, kWordLen);
+            kbuf[kWordLen] = '\0';
+            printf("%s : ", kbuf);
+            
             while(temp->value){
-                printf("\n");
+                printf("ARRAY elements : %d", temp->value->start);
                 temp = temp->value;
             }
         }
-        else {
-            printf("STRING : %d\n", temp->value->start);
+        else if(temp->value->type == STRING){
+            int kWordLen = temp->end - temp->start;
+            char kbuf[kWordLen];
+            strncpy(kbuf, allContent + temp->start, kWordLen);
+            kbuf[kWordLen] = '\0';
+            printf("%s : ", kbuf);
+            
+            int vWordLen = temp->value->end - temp->value->start;
+            char buf[vWordLen];
+            strncpy(buf, allContent + temp->value->start, vWordLen);
+            buf[vWordLen] = '\0';
+            printf("%s\n", buf);
         }
+        else if(temp->value->type == PRIMITIVE){
+            int kWordLen = temp->end - temp->start;
+            char kbuf[kWordLen];
+            strncpy(kbuf, allContent + temp->start, kWordLen);
+            kbuf[kWordLen] = '\0';
+            printf("%s : ", kbuf);
+            
+            int vWordLen = temp->value->end - temp->value->start;
+            char buf[vWordLen];
+            strncpy(buf, allContent + temp->value->start, vWordLen);
+            buf[vWordLen] = '\0';
+            printf("%s\n", buf);
+            }
+        
         temp = temp->next;
-    }while(temp);
+        
+    };
 }
-
 
 void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
 {
     int cur = base;
     int flag = 0;
+    //TOKEN_T *t_token = malloc(sizeof(TOKEN_T));
     //int numOfToken = 0;
     // 이거 있으면 ARRAY에 원소 2개 이상일 때 동작 안함.
     // if(allContent[cur] != '{'){
     //     return ;
     // }
-    
+    int exception=0;
     cur++;
     
     while(cur < contentSize){
+        TOKEN_T *t_token = malloc(sizeof(TOKEN_T));
         switch (allContent[cur]) { //doc[pos]
                 
-            //string
+                //string
             case '"' : {
-                char prev = allContent[cur-2];
+                int prev=0;
+                int z;
                 int flag;
                 char *begin = allContent + cur + 1;
                 char *end = strchr(begin, '"');
@@ -171,38 +216,87 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
                 strncpy(temp, begin, wordLen);
                 temp[wordLen] = '\0';
                 numOfToken++;
-                //
-                if(prev==':')
-                    flag=0;
-                else
-                    flag=1;
+                
+                for( z=0;cur-z>0;z++){
+                    
+                    if(allContent[cur-1-z]=='"'){
+                        prev = cur-z-1;
+                        break;}
+                }
+                if(prev!=0){
+                    char *begin1 = allContent + prev;
+                    char *end1 =  allContent + cur;
+                    int length3 = end1 - begin1;
+                    
+                    char temp5[length3];
+                    strncpy(temp5,begin1,length3);
+                    temp5[length3] = '\0';
+                    
+                    if(strchr(temp5,':')!=NULL){
+                        flag = 0;
+                        if(strchr(temp5,'{')!=NULL)
+                            flag =1;
+                    }
+                    else
+                        flag =1;
+                }
+                
+                int prev2=0;
+                for( int q=0;cur-q>0;q++){
+                    
+                    if(allContent[cur-1-q]==':'){
+                        prev2 = cur-q-1;
+                        break;}
+                }
+                if(prev2!=0){
+                    char *begin2 = allContent + prev2;
+                    char *end2 =  allContent + cur;
+                    int length4 = end2 - begin2;
+                    
+                    char temp6[length4];
+                    strncpy(temp6,begin2,length4);
+                    temp6[length4] = '\0';
+                    
+                    if(strchr(temp6,',')!=NULL)
+                        flag =1;}
+                
+                if( tf==1 ) {
+                    if(sz==0) {
+                        tf=0;
+                    }
+                    else{
+                        
+                        aa=5;
+                        flag = 0;
+                        sz--; i++;
+                    }
+                }
+                
+                
                 //print info of each token
-                printf("[%2d] %s (size=%d, %lu~%lu)\n", numOfToken, temp,flag, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
-                
+                printf("[%2d] %s (size=%d, %lu~%lu, String)\n", numOfToken, temp, flag, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
                 cur = cur + wordLen + 1;
-                //tokenList에 저장하는거
-                TOKEN_T *t_token = malloc(sizeof(TOKEN_T));
                 
-                // t_token->type = STRING;
-                // t_token->start = strlen(allContent) - strlen(begin);
-                // t_token->end = strlen(allContent) - strlen(end);
-                // t_token->size = flag;
-                // t_token->value = NULL;
-                // t_token->next = NULL;
+                t_token->type = STRING;
+                t_token->start = strlen(allContent) - strlen(begin);
+                t_token->end = strlen(allContent) - strlen(end);
+                t_token->size = flag;
+                t_token->value = NULL;
+                t_token->next = NULL;
+                strcpy(t_token->keyVal, temp);
                 
-                // if(flag) flag = 0;
-                // else flag = 1;
-                
-                // Pushtoken(list, t_token);
+                Pushtoken(list, t_token);
                 break;
             }
-            //array
+                //array
             case '[' : {
                 char temp[contentSize]; // 문자열 토큰
                 char arrStr[contentSize]; // 문자열 배열 토큰
                 char *beginArr, *endArr;
                 TOKEN_T *tokenListObject = malloc(sizeof(TOKEN_T));
                 int wordLen;
+                tf = 1;
+                int countArr;
                 
                 if( allContent[cur] == '[' ){
                     beginArr = allContent + cur;
@@ -211,34 +305,77 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
                     strncpy(arrStr, beginArr, wordLen);
                     arrStr[wordLen] = '\0';
                     numOfToken++;
-                    printf("[%2d] %s (size=1, %lu~%lu, ARRAY)\n", numOfToken, arrStr, strlen(allContent) - strlen(beginArr), strlen(allContent) - strlen(endArr));
+                    countArr=0;
+                    int ifObject=0;
+                    for(int i=0; i<wordLen; i++){
+                        if(allContent[cur+i]=='{'){
+                            ifObject++;
+                        }
+                        if(allContent[cur+i]==',')
+                            countArr++;
+                    }
+                    
+                    countArr++;
+                    sz = countArr;
+                    
+                    t_token->type = ARRAY;
+                    t_token->start = strlen(allContent) - strlen(beginArr);
+                    t_token->end = strlen(allContent) - strlen(endArr);
+                    t_token->size = flag;
+                    t_token->value = NULL;
+                    t_token->next = NULL;
+                    strcpy(t_token->keyVal, arrStr);
+                    Pushtoken(list, t_token);
+                    
+                    if(ifObject!=0)
+                        printf("[%2d] %s (size=%d, %lu~%lu, ARRAY)\n", numOfToken, arrStr,ifObject, strlen(allContent) - strlen(beginArr), strlen(allContent) - strlen(endArr));
+                    else
+                        printf("[%2d] %s (size=%d, %lu~%lu, ARRAY)\n", numOfToken, arrStr,countArr, strlen(allContent) - strlen(beginArr), strlen(allContent) - strlen(endArr));
+                    
                 }
+                
                 JsonParser(allContent, wordLen + cur, list, cur);
-                cur = cur + wordLen + 1;
+                
+                cur += wordLen-1;
                 
                 break;
             }
-            //object
+                //object
             case '{' : {
                 char temp[contentSize]; // 객체 저장
                 char *begin = allContent + cur;
                 char *cp = begin;
                 int depth = 0;
-                // if( allContent[cur] == '{') { begin = allContent + cur; }
+                char *object=begin;
                 char *end = NULL;
                 do{
-                    if(*cp == '{') depth++;
+                    if(*cp == '{')
+                        depth++;
                     else if(*cp == '}') depth--;
                     cp++;
                 }while(depth);
                 
-                // end = strchr(begin+1, '}');
                 end = cp;
                 int wordLen = end - begin;
                 
                 
                 strncpy(temp, begin, wordLen);
                 temp[wordLen] = '\0';
+                
+                
+                if(strchr(temp+1,'{')!=NULL){
+                    object++;
+                    while(*object!='{'){
+                        object++;
+                    }
+                    
+                    while(*object !='}'){
+                        if(*object==',')
+                            exception++;
+                        object++;
+                    }
+                }
+                
                 
                 int flag=0;
                 for(int i=0; i<wordLen; i++){
@@ -247,9 +384,23 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
                 }
                 flag++;
                 numOfToken++;
-                printf("[%2d] %s (size=%d, %lu~%lu)\n", numOfToken, temp, flag, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
+                TOKEN_T *dummy = malloc(sizeof(TOKEN_T));
+                dummy->type = STRING;
+                dummy->value = NULL;
+                dummy->next = t_token;
                 
-                JsonParser(allContent, wordLen + cur, list, cur);
+                t_token->type = OBJECT;
+                t_token->start = strlen(allContent) - strlen(begin);
+                t_token->end = strlen(allContent) - strlen(end);
+                t_token->size = flag;
+                t_token->value = NULL;
+                t_token->next = NULL;
+                strcpy(t_token->keyVal, temp);
+
+                Pushtoken(list, dummy);
+                printf("[%2d] %s (size=%d, %lu~%lu, OBJECT)\n", numOfToken, temp, flag-exception, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
+                
+                JsonParser(allContent, wordLen + cur, dummy, cur);
                 cur = cur + wordLen + 1;
                 
                 break;
@@ -257,7 +408,7 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
             case '}':
                 return;
                 
-            //numbers
+                //numbers
             case '0': case '1': case '2': case '3': case '4': case '5': case '6': case'7': case '8': case '9': case '-':
             {
                 char prev = allContent[cur-2];
@@ -279,13 +430,16 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
                 num = atoi(buffer);
                 numOfToken++;
                 
-                //
-                if(prev==':')
-                    flag=0;
-                else
-                    flag=1;
-                //
-                printf("[%2d] %s (size=%d, %lu~%lu)\n", numOfToken, buffer,flag, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
+                t_token->type = PRIMITIVE;
+                t_token->start = strlen(allContent) - strlen(begin);
+                t_token->end = strlen(allContent) - strlen(end);
+                t_token->size = flag;
+                t_token->value = NULL;
+                t_token->next = NULL;
+                strcpy(t_token->keyVal, buffer);
+                
+                Pushtoken(list, t_token);
+                printf("[%2d] %s (size=0, %lu~%lu, PRIMITIVE)\n", numOfToken, buffer, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
                 cur = cur + stringLength + 1;
                 break;
             }
@@ -295,4 +449,3 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
         cur++;
     }
 }
-
