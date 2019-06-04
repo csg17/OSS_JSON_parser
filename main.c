@@ -195,19 +195,23 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
     // }
     int exception=0;
     cur++;
+    //int i=0;
     
     while(cur < contentSize){
         TOKEN_T *t_token = malloc(sizeof(TOKEN_T));
         switch (allContent[cur]) { //doc[pos]
                 
-                //string
+            //string
             case '"' : {
                 int prev=0;
+                int prev1=0;
                 int z;
-                int flag;
+                int flag=1;
                 char *begin = allContent + cur + 1;
                 char *end = strchr(begin, '"');
                 char temp[contentSize];
+                
+                
                 
                 if(end == NULL) break;
                 
@@ -216,65 +220,69 @@ void JsonParser(char *allContent, int contentSize, TOKEN_T *list, int base)
                 strncpy(temp, begin, wordLen);
                 temp[wordLen] = '\0';
                 numOfToken++;
-                
+                //
                 for( z=0;cur-z>0;z++){
                     
-                    if(allContent[cur-1-z]=='"'){
-                        prev = cur-z-1;
-                        break;}
+                     if(allContent[cur-1-z]=='"'){
+                     prev = cur-z-1;
+                    break;}
                 }
                 if(prev!=0){
-                    char *begin1 = allContent + prev;
-                    char *end1 =  allContent + cur;
-                    int length3 = end1 - begin1;
-                    
-                    char temp5[length3];
-                    strncpy(temp5,begin1,length3);
-                    temp5[length3] = '\0';
-                    
-                    if(strchr(temp5,':')!=NULL){
-                        flag = 0;
-                        if(strchr(temp5,'{')!=NULL)
-                            flag =1;
-                    }
-                    else
-                        flag =1;
-                }
+                char *begin1 = allContent + prev;
+                char *end1 =  allContent + cur;
+                int length3 = end1 - begin1;
+
+                char temp5[length3];
+                strncpy(temp5,begin1,length3);
+                temp5[length3] = '\0';
                 
+                if(strchr(temp5,':')!=NULL){
+                flag = 0;
+                if(strchr(temp5,'{')!=NULL)
+                flag =1;
+                }
+                else
+                flag =1;
+                }
                 int prev2=0;
-                for( int q=0;cur-q>0;q++){
+                 for( int q=0;cur-q>0;q++){
                     
-                    if(allContent[cur-1-q]==':'){
-                        prev2 = cur-q-1;
-                        break;}
+                     if(allContent[cur-1-q]=='"'){
+                     prev2 = cur-q-1;
+                    break;}
                 }
                 if(prev2!=0){
-                    char *begin2 = allContent + prev2;
-                    char *end2 =  allContent + cur;
-                    int length4 = end2 - begin2;
-                    
-                    char temp6[length4];
-                    strncpy(temp6,begin2,length4);
-                    temp6[length4] = '\0';
-                    
-                    if(strchr(temp6,',')!=NULL)
-                        flag =1;}
-                
+                char *begin2 = allContent + prev2;
+                char *end2 =  allContent + cur;
+                int length4 = end2 - begin2;
+
+                char temp6[length4];
+                strncpy(temp6,begin2,length4);
+                temp6[length4] = '\0';
+
+                if(strchr(temp6,',')!=NULL)
+                flag =1;
+            
+                }
+
                 if( tf==1 ) {
-                    if(sz==0) {
+                   //printf("tf: %d, sz: %d \n", tf,sz );
+                    if(sz==0) { 
                         tf=0;
                     }
                     else{
-                        
-                        aa=5;
-                        flag = 0;
-                        sz--; i++;
+                    //total[i] = wordLen;
+                    //printf("3");
+                    aa=5;
+                    flag = 0;
+                    sz--; i++;
                     }
                 }
-                
-                
+                                  
+                   
                 //print info of each token
-                printf("[%2d] %s (size=%d, %lu~%lu, String)\n", numOfToken, temp, flag, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
+                printf("[%2d] %s (size=%d, %lu~%lu, String)\n", numOfToken, temp,flag, strlen(allContent) - strlen(begin), strlen(allContent) - strlen(end));
+                
                 cur = cur + wordLen + 1;
                 
                 t_token->type = STRING;
